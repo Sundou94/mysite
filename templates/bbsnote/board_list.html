@@ -1,0 +1,84 @@
+{% extends 'base.html' %} <!-- base.html을 상속받음 -->
+{% load bbsnote_filter %}
+{% block content %}
+<div class="container my-3">
+    <table class="table"> <!--부트스트랩에서 기본적으로 제공하는 클래스 -->
+        <thead>
+        <tr class="text-center thead-dark"> 
+            <th></th>           
+            <th style="width:50%">제목</th>
+            <th>작성일시</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% if board_list %}
+            {% for board in board_list %}
+            <tr class="text-center">
+                <!-- <td>{{ board_list.paginator.count|sub:board_list.start_index|sub:forloop.counter0|add:1 }}</td> -->
+                <td class="text-left">
+                    <a href="{% url 'bbsnote:detail' board.id %}">{{ board.subject }}</a>                
+                </td>            
+                <td>{{ board.create_date }}</td>
+            </tr>
+            {% endfor %}
+            {% else %}
+            <tr>
+                <td colspan="3">글이 없습니다.</td>
+            </tr>
+            {% endif %}
+            </tbody>
+    </table> 
+    <!-- 페이징처리 시작 -->
+    <ul class="pagination justify-content-center">
+        <!-- 이전페이지 -->
+        {% if board_list.has_previous %}
+        <li class="page-item">
+            <a class="page-link" data-page="{{ board_list.previous_page_number }}" href="#">이전</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" tabindex="-1" aria-disabled="true" href="#">이전</a>
+        </li>
+        {% endif %}
+        <!-- 페이지리스트 -->
+        {% for page_number in board_list.paginator.page_range %}
+        {% if page_number >= board_list.number|add:-5 and page_number <= board_list.number|add:5 %}
+            {% if page_number == board_list.number %}
+            <li class="page-item active" aria-current="page">
+                <a class="page-link" data-page="{{ page_number }}" href="#">{{ page_number }}</a>
+            </li>
+            {% else %}
+            <li class="page-item">
+                <a class="page-link" data-page="{{ page_number }}" href="#">{{ page_number }}</a>
+            </li>
+            {% endif %}
+        {% endif %}
+        {% endfor %}
+        <!-- 다음페이지 -->
+        {% if board_list.has_next %}
+        <li class="page-item">
+            <a class="page-link" data-page="{{ board_list.next_page_number }}" href="#">다음</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" tabindex="-1" aria-disabled="true" href="#">다음</a>
+        </li>
+        {% endif %}
+    </ul>
+    <!-- 페이징처리 끝 -->
+    <a href="{% url 'bbsnote:board_create' %}" class="btn btn-primary">등록</a>
+    </div>
+    <form id="searchForm" method="get" action="{% url 'index' %}">    
+        <input type="hidden" id="page" name="page" value="{{ page }}">    
+    </form>
+    {% endblock %}
+    {% block script %}
+    <script type='text/javascript'>
+    $(document).ready(function(){
+        $(".page-link").on('click', function() {
+            $("#page").val($(this).data("page"));
+            $("#searchForm").submit();
+        });     
+    });
+    </script>  
+{% endblock %}
