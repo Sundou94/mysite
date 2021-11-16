@@ -24,8 +24,8 @@ SECRET_KEY = 'django-insecure-nv1@d7-sae_z06gq3u+edlp*3t8&18vgt9@(e4!4p1r10=v!fu
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
-ALLOWED_HOSTS = []
+#아마존 클라우드아이피
+ALLOWED_HOSTS = ['3.38.126.153']
 
 
 # Application definition
