@@ -119,10 +119,15 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-STATIC_URL = '/static/'
-STATICFILES_DIRS = [
-    BASE_DIR / 'static',
-]
+#로컬에서 사용할때
+# STATIC_URL = '/static/'
+# STATICFILES_DIRS = [
+#     BASE_DIR / 'static',
+# ]
+#리눅스 서버 환경에 맞게 스테틱루트 재설정해준다.
+STATIC_ROOT = BASE_DIR / 'static/'
+STATIC_URL = 'static/'
+STATICFILES_DIRS=[]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
